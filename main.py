@@ -8,7 +8,8 @@ from tkinter import *
 import numpy as np
 import pandas as pnd
 import pyodbc
-
+import sqlalchemy as sql
+import Students
 
 
 
@@ -21,6 +22,12 @@ def readFiles(root):
     #text.insert(1.0, file1)
     text.insert(3.0, students)
     return students
+
+def connecting2():
+    engine = sql.create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
+    #engine = sql.create_engine('mssql+pyodbc://LAPTOP-98I2O88V/ProjetX?driver=SQL_Server?Trusted_Connection=yes')
+    conn = engine.connect()
+    conn.execute("select * from Student")
 def connecting():
     driver = 'DRIVER={SQL Server}'
     server = 'SERVER=LAPTOP-98I2O88V'
@@ -55,19 +62,19 @@ def InsertingStudents(root):
     for i in range(len(student)):
         params.append(student[i])
     for p in params:
-        cursor.execute("insert into Student (Student_Id,Name_,Programm,Course) values (?,?,?,?)", params)
+        print(p)
+        cursor.execute("insert into Student (Student_Id,Name_,Programm,Course) values (?,?,?,?)", p)
 
 
 
 if __name__ == '__main__':
     root = Tk()
-
     b1 = Button(text="Распечатать",
                 width=15, height=3, command=readFiles(root))
     b1.pack()
-    b2 = Button(text="Подключиться",
-                width=15, height=3, command=InsertingStudents(root))
-    b2.pack()
+    # b2 = Button(text="Подключиться",
+    #             width=15, height=3, command=connecting)
+    # b2.pack()
     root.mainloop()
 
 

@@ -1,15 +1,13 @@
 # This is a sample Python script.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
 from tkinter import *
 import numpy as np
+import pandas as pd
 import pandas as pnd
+import sqlalchemy as sal
+from sqlalchemy import create_engine
 import pyodbc
-import sqlalchemy as sql
-import Students
+
 
 
 
@@ -24,20 +22,25 @@ def readFiles(root):
     return students
 
 def connecting2():
-    engine = sql.create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
+    engine = sal.create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
     #engine = sql.create_engine('mssql+pyodbc://LAPTOP-98I2O88V/ProjetX?driver=SQL_Server?Trusted_Connection=yes')
     conn = engine.connect()
     conn.execute("select * from Student")
 def connecting():
-    driver = 'DRIVER={SQL Server}'
-    server = 'SERVER=LAPTOP-98I2O88V'
+    Driver = 'ODBC Driver 17 for SQL Server'
+    Server = 'DESKTOP-0ED7FI8\SQLEXPRESS'
     #port = 'PORT=1433'
-    db = 'DATABASE=ProjetX'
-    #user = 'UID=sa'
-    #pw = 'PWD=111111111111111'
-    conn_str = ';'.join([driver, server,db])
-    conn = pyodbc.connect(conn_str)
-    return conn
+    Database = 'Students'
+
+    Database_con = f'mssql://@{Server}/{Database}?driver={Driver}'
+    engine = create_engine(Database_con)
+    con = engine.connect()
+    df = pd.read_sql_query("SELECT * FROM dbo.Users", con)
+    print(df)
+
+    #conn_str = ';'.join([driver, server,db])
+    #conn = pyodbc.connect(conn_str)
+    #return conn
     #cursor = conn.cursor()
     #cursor.execute('select * from Labs')
     #rows = cursor.fetchall()
@@ -65,17 +68,30 @@ def InsertingStudents(root):
         print(p)
         cursor.execute("insert into Student (Student_Id,Name_,Programm,Course) values (?,?,?,?)", p)
 
+def conn():
+    conn = pyodbc.connect(
+        r'Driver={SQL Server};Server=DESKTOP-0ED7FI8\SQLEXPRESS;Database=Students;Trusted_Connection=yes;')
+    cursor = conn.cursor()
+    cursor.execute('SELECT name FROM dbo.Users')
+    while 1:
+        row = cursor.fetchone()
+        if not row:
+            break
+        print(row.name)
+    conn.close()
+
 
 
 if __name__ == '__main__':
     root = Tk()
-    b1 = Button(text="Распечатать",
-                width=15, height=3, command=readFiles(root))
-    b1.pack()
-    # b2 = Button(text="Подключиться",
-    #             width=15, height=3, command=connecting)
-    # b2.pack()
+    #b1 = Button(text="Распечатать",
+    #               width=15, height=3, command=readFiles(root))
+    # b1.pack()
+    b2 = Button(text="Подключиться",
+                  width=15, height=3, command=connecting())
+    b2.pack()
     root.mainloop()
+
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

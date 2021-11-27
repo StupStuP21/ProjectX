@@ -11,6 +11,9 @@ import sqlalchemy as sql
 import Controller
 from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import create_engine, MetaData, null
+import sys
+from PyQt6 import QtWidgets
+from ui_main_window import Ui_MainWindow
 
 Driver = 'ODBC Driver 17 for SQL Server'
 # Server = 'DESKTOP-0ED7FI8\SQLEXPRESS'
@@ -23,16 +26,6 @@ Database_con = f'mssql://@{Server}/{Database}?driver={Driver}'
 engine = create_engine(Database_con)
 Base = declarative_base()
 session = Session(bind=engine)
-def readFiles():
-    file1 = pnd.read_csv("LabsData.csv", header=0, delimiter=";")
-    file2 = pnd.read_csv("TestAndTasksData.csv", header=0, delimiter=";")
-    students = file1.iloc[:, 0:4].values
-    text = Text(root, height=50)
-    text.pack()
-    text.insert(1.0, file1)
-    text.insert(3.0, file2)
-    # return students
-
 
 def connecting():
     con = engine.connect()
@@ -90,19 +83,16 @@ def connecting():
     # Labs.Lab.test()
     # Lab = Labs.Lab.getLabTroughId(1)
     # print(Lab)
-
+class StartWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 if __name__ == '__main__':
-    #root = Tk()
-    #b1 = Button(text="Распечатать",
-    #            width=15, height=3, command=readFiles)
-    #b1.pack()
-    #b2 = Button(text="Подключиться",
-     #           width=15, height=3, command=connecting)
-   # b2.pack()
-    #b3 = Button(text="Получить лабу",
-     #           width=15, height=3, command=Controller.test)
-    #b3.pack()
-    #root.mainloop()
-    print(1)
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
+    window = StartWindow() # Создаём объект класса ExampleApp
+    window.show()  # Показываем окно
+    app.exec()  # и запускаем приложение
+
+
+

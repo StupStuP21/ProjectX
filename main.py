@@ -7,7 +7,6 @@
 from tkinter import *
 import numpy as np
 import pandas as pnd
-import pyodbc
 import sqlalchemy as sql
 import Controller
 from sqlalchemy.orm import declarative_base, Session
@@ -94,16 +93,16 @@ def connecting():
 
 
 if __name__ == '__main__':
-    root = Tk()
-    b1 = Button(text="Распечатать",
-                width=15, height=3, command=readFiles)
-    b1.pack()
-    b2 = Button(text="Подключиться",
-                width=15, height=3, command=connecting)
-    b2.pack()
-    b3 = Button(text="Получить лабу",
-                width=15, height=3, command=Controller.test)
-    b3.pack()
-    root.mainloop()
-
+    #root = Tk()
+    #b1 = Button(text="Распечатать",
+    #            width=15, height=3, command=readFiles)
+    #b1.pack()
+    #b2 = Button(text="Подключиться",
+     #           width=15, height=3, command=connecting)
+   # b2.pack()
+    #b3 = Button(text="Получить лабу",
+     #           width=15, height=3, command=Controller.test)
+    #b3.pack()
+    #root.mainloop()
+    print(1)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

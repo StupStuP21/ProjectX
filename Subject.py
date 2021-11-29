@@ -1,9 +1,9 @@
 import Labs
-from sqlalchemy import  Integer, Column, VARCHAR
-from main import Base,engine,session
+from sqlalchemy import Integer, Column, VARCHAR
+from DatabaseConnect import connect
 
 
-class Subject(Base):
+class Subject(connect.Base):
     __tablename__ = 'Subjects'
     __table_args__ = {'extend_existing': True}
 
@@ -15,23 +15,25 @@ class Subject(Base):
 
     def getSubjectId(self):
         return self.Subject_ID
+
     def getName(self):
         return self.Name
 
     def getAllLabsForSubject(self):
-        labs = session.query(Labs.Lab).filter(Labs.Lab.Subject_ID == self.Subject_ID).all()
+        labs = connect.session.query(Labs.Lab).filter(Labs.Lab.Subject_ID == self.Subject_ID).all()
         return labs
 
     @staticmethod
     def addNewStudentInBase(SubjectObject):
-        session.add(SubjectObject)
-        session.commit()
+        connect.session.add(SubjectObject)
+        connect.session.commit()
 
     @staticmethod
     def Create_AddInBase_GetObject(Name):
         newSubject = Subject(Name)
-        session.add(newSubject)
-        session.commit()
+        connect.session.add(newSubject)
+        connect.session.commit()
         return newSubject
 
-Base.metadata.create_all(engine)
+
+connect.Base.metadata.create_all(connect.engine)

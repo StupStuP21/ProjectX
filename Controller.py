@@ -7,5 +7,5 @@ def thirdFunction():
     Labs.Lab.addNewLabInBase(newLab)
 
 def test():
-    newStud = Students.Student("Петров Василий Иваныч","ПИ",2)
+    newStud = Students.Student("Петров Василий Иваныч","ПИ",1)
     Students.Student.addNewStudentInBase(newStud)

@@ -3,36 +3,18 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-
-from tkinter import *
-import numpy as np
-import pandas as pnd
-import sqlalchemy as sql
-import Controller
-from sqlalchemy.orm import declarative_base, Session
-from sqlalchemy import create_engine, MetaData, null
 import sys
 from PyQt6 import QtWidgets
 from ui_main_window import Ui_MainWindow
 
-Driver = 'ODBC Driver 17 for SQL Server'
-# Server = 'DESKTOP-0ED7FI8\SQLEXPRESS'
-Server = 'LAPTOP-98I2O88V'
-# port = 'PORT=1433'
-Database = 'ProjectXX'
-# Database = 'AdventureWorks2019'
 
-Database_con = f'mssql://@{Server}/{Database}?driver={Driver}'
-engine = create_engine(Database_con)
-Base = declarative_base()
-session = Session(bind=engine)
 
-def connecting():
-    con = engine.connect()
-    metadata = MetaData()
-    # df = pnd.read_sql_query("SELECT * FROM dbo.Labs", con)
-    df = pnd.read_sql_query("SELECT * FROM HumanResources.Department", con)
-    print(df)
+# def connecting():
+#     con = engine.connect()
+#     metadata = MetaData()
+#     # df = pnd.read_sql_query("SELECT * FROM dbo.Labs", con)
+#     df = pnd.read_sql_query("SELECT * FROM HumanResources.Department", con)
+#     print(df)
 
 
 # def connecting2():

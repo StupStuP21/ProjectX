@@ -1,7 +1,8 @@
-from sqlalchemy import Integer,Column, SMALLINT, VARCHAR
-from main import engine,Base,session
+from sqlalchemy import Integer, Column, SMALLINT, VARCHAR
+from DatabaseConnect import connect
 
-class Student(Base):
+
+class Student(connect.Base):
     __tablename__ = "Students"
     __table_args__ = {'extend_existing': True}
     Student_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
@@ -9,7 +10,7 @@ class Student(Base):
     Program = Column(VARCHAR(50), nullable=False)
     Course = Column(SMALLINT, nullable=False)
 
-    def __init__(self,Name,Program,Course):
+    def __init__(self, Name, Program, Course):
         self.Name = Name
         self.Program = Program
         self.Course = Course
@@ -28,14 +29,15 @@ class Student(Base):
 
     @staticmethod
     def addNewStudentInBase(StudentObject):
-        session.add(StudentObject)
-        session.commit()
+        connect.session.add(StudentObject)
+        connect.session.commit()
 
     @staticmethod
     def Create_AddInBase_GetObject(Name, Program, Course):
         newStudent = Student(Name, Program, Course)
-        session.add(newStudent)
-        session.commit()
+        connect.session.add(newStudent)
+        connect.session.commit()
         return newStudent
 
-Base.metadata.create_all(engine)
+
+connect.Base.metadata.create_all(connect.engine)

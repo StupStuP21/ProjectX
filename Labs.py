@@ -16,7 +16,7 @@ class Lab(connect.Base):
         self.MaxLScore = MaxLScore
         self.Subject_ID = Subject_ID
 
-    Lab_ID = Column(Integer, nullable=False, primary_key=True, unique=True)
+    Lab_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
     Theme = Column(VARCHAR(255), nullable=False)
     DeadlineDate = Column(DATETIME, nullable=False)
     MaxLScore = Column(Integer, nullable=False)
@@ -39,7 +39,7 @@ class Lab(connect.Base):
         return self.Subject_ID
 
     @staticmethod
-    def addNewLabInBase(LabObject):
+    def addNewInBase(LabObject):
         connect.session.add(LabObject)
         connect.session.commit()
 

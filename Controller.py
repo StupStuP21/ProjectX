@@ -1,11 +1,11 @@
-import Labs
-import Students
-
+from Labs import Lab
+from CompletedLabs import CompletedLab
+from CompletedTests import CompletedTest
 
 def thirdFunction():
-    newLab = Labs.Lab(Theme ='GR', DeadlineDate='2021-07-11', MaxLScore=12, Subject_ID=1)
-    Labs.Lab.addNewLabInBase(newLab)
+    newLab = Lab(Theme ='GR', DeadlineDate='2021-07-11', MaxLScore=12, Subject_ID=1)
+    Lab.addNewLabInBase(newLab)
 
 def test():
-    newStud = Students.Student("Петров Василий Иваныч","ПИ",1)
-    Students.Student.addNewStudentInBase(newStud)
+    newCompletedTest = CompletedTest(1,1,5)
+    newCompletedTest.addNewInBase(newCompletedTest)

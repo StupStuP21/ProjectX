@@ -6,8 +6,8 @@ class Student(connect.Base):
     __tablename__ = "Students"
     __table_args__ = {'extend_existing': True}
     Student_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
-    Name = Column(VARCHAR(50), nullable=False)
-    Program = Column(VARCHAR(50), nullable=False)
+    Name = Column(VARCHAR(255), nullable=False)
+    Program = Column(VARCHAR(255), nullable=False)
     Course = Column(SMALLINT, nullable=False)
 
     def __init__(self, Name, Program, Course):
@@ -28,7 +28,7 @@ class Student(connect.Base):
         return self.Course
 
     @staticmethod
-    def addNewStudentInBase(StudentObject):
+    def addNewInBase(StudentObject):
         connect.session.add(StudentObject)
         connect.session.commit()
 

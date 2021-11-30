@@ -11,7 +11,7 @@ class Subject(connect.Base):
         self.Name = Name
 
     Subject_ID = Column(Integer, nullable=False, primary_key=True, unique=True)
-    Name = Column(VARCHAR(50), nullable=False)
+    Name = Column(VARCHAR(255), nullable=False)
 
     def getSubjectId(self):
         return self.Subject_ID
@@ -24,7 +24,7 @@ class Subject(connect.Base):
         return labs
 
     @staticmethod
-    def addNewStudentInBase(SubjectObject):
+    def addNewInBase(SubjectObject):
         connect.session.add(SubjectObject)
         connect.session.commit()
 

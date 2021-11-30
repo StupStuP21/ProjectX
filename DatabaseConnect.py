@@ -1,28 +1,57 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, Session
+from sqlalchemy import *
+import sqlalchemy
+from sqlalchemy.orm import *
+
+class DatabaseConnect:
+    def getAll(self, table):
+        session = self.Session()
+        out = []
+        q = session.query(table)
+        for c in q:
+            out.append(c)
+        return out
+
+    def getAllLabs(self):
+        return self.getAll(self.labs_table)
+
+    def getAllLabStud(self):
+        return self.getAll(self.labs_table)
+
+    def getAllStudents(self):
+        return self.getAll(self.students_table)
+
+    def getAllSubjects(self):
+        return self.getAll(self.subjects_table)
+
+    def getAllTasks(self):
+        return self.getAll(self.tasks_table)
+
+    def getAllTests(self):
+        return self.getAll(self.tests_table)
+
+    def getAllTestStud(self):
+        return self.getAll(self.test_stud_table)
+
+    def getAllTestTaskStud(self):
+        return self.getAll(self.test_task_stud_table)
+
+    def __init__(self):
+        self.engine = create_engine(
+            'mssql://ПК\\SQLEXPRESS/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
+        self.engine.connect()
+        self.Session = sessionmaker(bind=self.engine)
+        self.metadata = MetaData(bind=self.engine)
+        self.labs_table = sqlalchemy.Table('Labs', self.metadata, autoload=True)
+        self.lab_stud_table = sqlalchemy.Table("LabStud", self.metadata, autoload=True)
+        self.students_table = sqlalchemy.Table("Students", self.metadata, autoload=True)
+        self.subjects_table = sqlalchemy.Table("Subjects", self.metadata, autoload=True)
+        self.tasks_table = sqlalchemy.Table("Tasks", self.metadata, autoload=True)
+        self.tests_table = sqlalchemy.Table("Tests", self.metadata, autoload=True)
+        self.test_stud_table = sqlalchemy.Table("TestStud", self.metadata, autoload=True)
+        self.test_task_stud_table = sqlalchemy.Table("TestTaskStud", self.metadata, autoload=True)
 
 
-class DatabaseConnect():
-    Driver = 'ODBC Driver 17 for SQL Server'
-    # Server = 'DESKTOP-0ED7FI8\SQLEXPRESS'
-    Server = 'LAPTOP-98I2O88V'
-    # port = 'PORT=1433'
-    Database = 'ProjectXX'
-    # Database = 'AdventureWorks2019'
-
-    Database_con = f'mssql://@{Server}/{Database}?driver={Driver}'
-    engine = create_engine(Database_con)
-    Base = declarative_base()
-    session = Session(bind=engine)
-
-    def __init__(self, Driver, Server, Database):
-        self.Driver = Driver
-        self.Server = Server
-        self.Database = Database
-        self.Database_con = f'mssql://@{Server}/{Database}?driver={Driver}'
-        self.engine = create_engine(self.Database_con)
-        self.Base = declarative_base()
-        self.session = Session(bind=self.engine)
 
 
-connect = DatabaseConnect('ODBC Driver 17 for SQL Server', 'LAPTOP-98I2O88V', 'ProjectXX')

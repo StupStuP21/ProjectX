@@ -1,12 +1,13 @@
+import DatabaseConnect.engine
+import sqlalchemy
 import Subject as sub
 from sqlalchemy import Integer,  Column, VARCHAR, DATETIME, ForeignKey
 from sqlalchemy.orm import relationship
-from DatabaseConnect import connect
 
 Subject = sub.Subject
 
 
-class Lab(connect.Base):
+class Lab:
     __tablename__ = 'Labs'
     __table_args__ = {'extend_existing': True}
 
@@ -15,6 +16,7 @@ class Lab(connect.Base):
         self.DeadlineDate = DeadlineDate
         self.MaxLScore = MaxLScore
         self.Subject_ID = Subject_ID
+        self.connect = DatabaseConnect.engine.Connection
 
     Lab_ID = Column(Integer, nullable=False, primary_key=True, unique=True)
     Theme = Column(VARCHAR(255), nullable=False)

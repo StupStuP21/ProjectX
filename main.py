@@ -10,31 +10,32 @@ import sqlalchemy
 import sqlalchemy.orm as sql
 from DatabaseConnect import DatabaseConnect
 from threading import Thread
-
+from SubjectModel import subjectModel
+from TestModel import testModel
 
 class StartWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.comboBox_subject.activated.connect(comboboxSubjectChanged)
 
-class sub:
-    def __init__(self, tup):
-        self.id = tup[0]
-        self.name = tup[1]
-    def __str__(self):
-        return self.name
-    def __repr__(self):
-        return self.name
 
 def setSubjects():
-    subjects = [str(sub(s)) for s in db.getAllSubjects()]
+    subjects = [str(subjectModel(s)) for s in db.getAllSubjects()]
     window.comboBox_subject.addItems(subjects)
-    window.subject_label.setText("Suqqa")
+
+def comboboxSubjectChanged():
+    subject = window.comboBox_subject.currentText()
+    tests = db.getAllTestsBySubjectName(subject)
+    testsModels = [testModel(s) for s in tests]
+    testsIds = [str(test) for test in testsModels]
+    window.comboBox_text.addItems(testsIds)
+
 
 if __name__ == '__main__':
+    db = DatabaseConnect()
     app = QtWidgets.QApplication(sys.argv)
     window = StartWindow()
-    db = DatabaseConnect()
     window.show()
     setSubjects()
     app.exec()

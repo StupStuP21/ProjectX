@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import *
 import sqlalchemy
 from sqlalchemy.orm import *
-
+from SubjectModel import subjectModel
 class DatabaseConnect:
     def getAll(self, table):
         session = self.Session()
@@ -36,6 +36,24 @@ class DatabaseConnect:
 
     def getAllTestTaskStud(self):
         return self.getAll(self.test_task_stud_table)
+
+    def getAllTestsBySubjectName(self, subject):
+        subject = self.getSubjectByName(subject)
+        session = self.Session()
+        q = session.query(self.tests_table).filter(self.tests_table.c.Subject_Id == 1)
+        #q = session.query(self.tests_table)
+        a = []
+        for c in q:
+            a.append(c)
+        return a
+
+    def getSubjectByName(self, name):
+        session = self.Session()
+        q = session.query(self.subjects_table).filter(self.subjects_table.name == name)
+        subject = null
+        for c in q:
+            subject = subjectModel(c)
+        return subject
 
     def __init__(self):
         self.engine = create_engine(

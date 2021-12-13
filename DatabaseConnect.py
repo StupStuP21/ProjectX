@@ -13,11 +13,22 @@ class DatabaseConnect:
             out.append(c)
         return out
 
+    def getAllWithout(self,table,id):
+        session = self.Session()
+        out=[]
+        q = session.query(table).filter_by(table.Lab_Id!=id).all()
+        for c in q:
+            out.append(c)
+        return out
+
     def getAllLabs(self):
         return self.getAll(self.labs_table)
 
+    def getAllLabsWithout(self,id):
+        return self.getAllWithout(self.labs_table,id)
+
     def getAllLabStud(self):
-        return self.getAll(self.labs_table)
+        return self.getAll(self.lab_stud_table)
 
     def getAllStudents(self):
         return self.getAll(self.students_table)
@@ -55,10 +66,12 @@ class DatabaseConnect:
             subject = subjectModel(c)
         return subject
 
+
     def __init__(self):
         self.engine = create_engine(
-            'mssql://ПК\\SQLEXPRESS/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
+            'mssql://LAPTOP-98I2O88V/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
         self.engine.connect()
+        self.Base = declarative_base()
         self.Session = sessionmaker(bind=self.engine)
         self.metadata = MetaData(bind=self.engine)
         self.labs_table = sqlalchemy.Table('Labs', self.metadata, autoload=True)

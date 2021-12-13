@@ -1,12 +1,11 @@
 from sqlalchemy import Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship
-from DatabaseConnect import connect
+from main import db
 from Students import Student
 from Tests import Test
 from Tasks import Task
 
-
-class CompletedTask(connect.Base):
+class CompletedTask(db.Base):
     __tablename__ = 'TestTaskStud'
     __table_args__ = {'extend_existing': True}
 
@@ -24,18 +23,32 @@ class CompletedTask(connect.Base):
     Tests = relationship(Test)
     Tasks = relationship(Task)
 
+    def Print(self):
+        print("Student_Id:",self.Stud_Id,";","Test_Id:",self.Test_Id,";","Task_Id",self.Task_Id,";","GetTScore:",self.GetTaskScore)
+
     @staticmethod
     def addNewInBase(CompletedTaskObject):
-        connect.session.add(CompletedTaskObject)
-        connect.session.commit()
+        session = db.Session()
+        session.add(CompletedTaskObject)
+        session.commit()
 
     @staticmethod
     def Create_AddInBase_GetObject(Stud_ID, Test_ID, Task_ID, GetTScore):
+        session = db.Session()
         newCompletedTask = CompletedTask(Stud_ID, Test_ID, Task_ID, GetTScore)
-        connect.session.add(newCompletedTask)
-        connect.session.commit()
+        session.add(newCompletedTask)
+        session.commit()
         return newCompletedTask
 
+    @staticmethod
+    def getAllCompletedTasksInTest(StudentObject,testId):
+        completedTasksAll = db.getAllTestTaskStud()
+        completedTasks = []
+        for i in completedTasksAll:
+            if i[0] == StudentObject.Student_Id and i[1] == testId:
+                newTask = CompletedTask(i[0], i[1], i[2], i[3])
+                completedTasks.append(newTask)
+        return completedTasks
 
-connect.Base.metadata.create_all(connect.engine)
+db.Base.metadata.create_all(db.engine)
 

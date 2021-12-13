@@ -1,22 +1,22 @@
-import DatabaseConnect.engine
 import sqlalchemy
 import Subject as sub
 from sqlalchemy import Integer,  Column, VARCHAR, DATETIME, ForeignKey
 from sqlalchemy.orm import relationship
-
+from main import db
 Subject = sub.Subject
 
 
-class Lab:
+class Lab(db.Base):
     __tablename__ = 'Labs'
     __table_args__ = {'extend_existing': True}
 
-    def __init__(self, Theme, DeadlineDate, MaxLScore, Subject_ID):
+    def __init__(self, ID,Theme, DeadlineDate, MaxLScore, Subject_ID):
+        self.Lab_Id = ID
         self.Theme = Theme
         self.DeadlineDate = DeadlineDate
         self.MaxLScore = MaxLScore
         self.Subject_ID = Subject_ID
-        self.connect = DatabaseConnect.engine.Connection
+        #self.connect = DatabaseConnect.engine.Connection
 
     Lab_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
     Theme = Column(VARCHAR(255), nullable=False)
@@ -42,14 +42,16 @@ class Lab:
 
     @staticmethod
     def addNewInBase(LabObject):
-        connect.session.add(LabObject)
-        connect.session.commit()
+        session = db.Session()
+        session.add(LabObject)
+        session.commit()
 
     @staticmethod
-    def Create_AddInBase_GetObject(Theme, DeadlineDate, MaxLScore):
-        newLab = Lab(Theme, DeadlineDate, MaxLScore)
-        connect.session.add(newLab)
-        connect.session.commit()
+    def Create_AddInBase_GetObject(ID,Theme, DeadlineDate, MaxLScore,SID):
+        session = db.Session()
+        newLab = Lab(ID,Theme, DeadlineDate, MaxLScore,SID)
+        session.add(newLab)
+        session.commit()
         return newLab
 
     @staticmethod
@@ -57,5 +59,15 @@ class Lab:
         print("Table is Alright")
         # return df
 
+    @staticmethod
+    def getAll_in_Subject(id):
+        session = db.Session()
+        q = db.getAllLabs()
+        Labs = []
+        for i in q:
+            if (i[4]==id):
+                Labs.append(Lab(i[0],i[1],i[2],i[3],i[4]))
+        return Labs
 
-connect.Base.metadata.create_all(connect.engine)
+
+db.Base.metadata.create_all(db.engine)

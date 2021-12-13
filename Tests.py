@@ -1,14 +1,15 @@
 from sqlalchemy import Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship
-from DatabaseConnect import connect
+from main import db
 from Subject import Subject
 
 
-class Test(connect.Base):
+class Test(db.Base):
     __tablename__ = 'Tests'
     __table_args__ = {'extend_existing': True}
 
-    def __init__(self, MaxTScore, Subject_ID):
+    def __init__(self, test_Id,MaxTScore, Subject_ID):
+        self.Test_ID = test_Id
         self.Subject_ID = Subject_ID
         self.MaxTScore = MaxTScore
 
@@ -19,15 +20,26 @@ class Test(connect.Base):
 
     @staticmethod
     def addNewInBase(TestObject):
-        connect.session.add(TestObject)
-        connect.session.commit()
+        session = db.Session()
+        session.add(TestObject)
+        session.commit()
 
     @staticmethod
     def Create_AddInBase_GetObject(MaxTScore, Subject_ID):
+        session = db.Session()
         newTest = Test(MaxTScore, Subject_ID)
-        connect.session.add(newTest)
-        connect.session.commit()
+        session.add(newTest)
+        session.commit()
+        return newTest
+
+    @staticmethod
+    def getTestById(id):
+        tests = db.getAllTests()
+        for i in tests:
+            if i[0]==id:
+                newTest = Test(i[0],i[1],i[2])
+                break
         return newTest
 
 
-connect.Base.metadata.create_all(connect.engine)
+db.Base.metadata.create_all(db.engine)

@@ -1,10 +1,10 @@
 from sqlalchemy import Integer, Column, ForeignKey,Date
 from sqlalchemy.orm import relationship
-from DatabaseConnect import connect
+from main import db
 from Students import Student
 from Tests import Test
 
-class CompletedTest(connect.Base):
+class CompletedTest(db.Base):
     __tablename__ = 'TestStud'
     __table_args__ = {'extend_existing': True}
 
@@ -21,15 +21,19 @@ class CompletedTest(connect.Base):
 
     @staticmethod
     def addNewInBase(CompletedTestObject):
-        connect.session.add(CompletedTestObject)
-        connect.session.commit()
+        session = db.Session()
+        session.add(CompletedTestObject)
+        session.commit()
 
     @staticmethod
     def Create_AddInBase_GetObject(Stud_ID, Test_ID, GetTScore):
+        session = db.Session()
         newCompletedTest = CompletedTest(Stud_ID, Test_ID, GetTScore)
-        connect.session.add(newCompletedTest)
-        connect.session.commit()
+        session.add(newCompletedTest)
+        session.commit()
         return newCompletedTest
 
 
-connect.Base.metadata.create_all(connect.engine)
+
+
+db.Base.metadata.create_all(db.engine)

@@ -67,6 +67,14 @@ class CompletedLab(db.Base):
                 LabsCurrent.append(newCompletedLab)
         return LabsCurrent
 
+    @staticmethod
+    def getAllCompletedLabs():
+        allLabs = db.getAllLabStud()
+        LabsCurrent = []
+        for i in allLabs:
+            newCompletedLab = CompletedLab(i[0], i[1], i[2], i[3], i[4])
+            LabsCurrent.append(newCompletedLab)
+        return LabsCurrent
     def Print(self):
         print ('stud_id:',self.Stud_ID,' lab_id:',self.Lab_ID,'PassDate:',self.PassDate,'Tryes:',self.Tryes,'Score:',self.GetLScore)
 

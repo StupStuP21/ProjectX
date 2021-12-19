@@ -69,5 +69,14 @@ class Lab(db.Base):
                 Labs.append(Lab(i[0],i[1],i[2],i[3],i[4]))
         return Labs
 
+    @staticmethod
+    def getLabById(id):
+        labs = db.getAllLabs()
+        for i in labs:
+            if i[0]==id:
+                newLab = Lab(i[0],i[1],i[2],i[3],i[4])
+                break
+        return newLab
+
 
 db.Base.metadata.create_all(db.engine)

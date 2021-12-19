@@ -36,7 +36,7 @@ def setSubjects():
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = StartWindow()
-    Controller.test()
+    #Controller.test()
     window.show()
     setSubjects()
     app.exec()

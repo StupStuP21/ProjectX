@@ -1,5 +1,7 @@
 import math
 
+import CompletedLabs
+import Labs
 import Tasks
 from main import db
 from Labs import Lab
@@ -8,61 +10,30 @@ from Tests import Test
 from CompletedLabs import CompletedLab
 from CompletedTasks import CompletedTask
 
-# import Students
-# import Labs
 
 nNearest = 1
 
 
 class Filterisation:
+    AllCompletedLabsWithoutCurrent = ...
+    AllCompletedLabsCurrent = ...
 
     def __init__(self, id, subjectId, testId):
         self.currentStudentId = id
         self.subjectId = subjectId
         self.AllStudentsWithoutCurrent = Student.getStudentsWithoutById(self.currentStudentId)
         self.currentStudent = Student.getStudentById(self.currentStudentId)
-        self.AllLabs = Lab.getAll_in_Subject(self.subjectId)
-        self.AllCompletedLabsWithoutCurrent = CompletedLab.getAllCompletedLabsWithoutByStudId(self.currentStudentId)
-        self.AllCompletedLabsCurrent = CompletedLab.getAllCompletedLabsByStudId(self.currentStudentId)
+        self.AllCompletedLabs = Lab.getAll_in_Subject(self.subjectId)
+        self.AllCompletedLabs = CompletedLabs.CompletedLab.getAllCompletedLabs()
         self.Test_Id = testId
         self.Test = Test.getTestById(testId)
         self.AllTasks = ...
         self.AllCompletedTasks = ...  # возможно, не сюда, а потом для каждого отдельно
 
-    def normilizingCompletedLabsDataForCurrent(self):
-        CurrentTryesMax = 0
-        CurrentTryesMin = 0
-        CurrentDateMax = self.AllCompletedLabsCurrent[0].PassDate
-        CurrentDateMin = self.AllCompletedLabsCurrent[0].PassDate
-        CurrentScoreMax = 0
-        CurrentScoreMin = 0
-        for i in self.AllCompletedLabsCurrent:
-            if i.GetLScore > CurrentScoreMax:
-                CurrentScoreMax = i.GetLScore
-            elif i.GetLScore < CurrentScoreMin:
-                CurrentScoreMin = i.GetLScore
-
-            if i.PassDate > CurrentDateMax:
-                CurrentDateMax = i.PassDate
-            elif i.PassDate < CurrentDateMin:
-                CurrentDateMin = i.PassDate
-
-            if i.Tryes > CurrentTryesMax:
-                CurrentTryesMax = i.Tryes
-            elif i.Tryes < CurrentTryesMin:
-                CurrentTryesMin = i.Tryes
-
-        for i in self.AllCompletedLabsCurrent:
-            i.Tryes = (i.Tryes - CurrentTryesMin) / (CurrentTryesMax - CurrentTryesMin)
-            i.PassDate = (i.PassDate - CurrentDateMin) / (CurrentDateMax - CurrentDateMin)
-            i.GetLScore = (i.GetLScore - CurrentScoreMin) / (CurrentScoreMax - CurrentScoreMin)
-
     @staticmethod
     def normilizingCompletedLabsData(labs):  # labs - list of labs
         wCurrentTryesMax = 0
         wCurrentTryesMin = 0
-        # labs[0].Print()
-        # labs[1].Print()
         wCurrentDateMax = labs[0].PassDate
         wCurrentDateMin = labs[0].PassDate
         wCurrentScoreMax = 0
@@ -82,17 +53,49 @@ class Filterisation:
                 wCurrentTryesMax = i.Tryes
             elif i.Tryes < wCurrentTryesMin:
                 wCurrentTryesMin = i.Tryes
-        for i in labs:
-            i.Tryes = (i.Tryes - wCurrentTryesMin) / (wCurrentTryesMax - wCurrentTryesMin)
-            i.PassDate = (i.PassDate - wCurrentDateMin) / (wCurrentDateMax - wCurrentDateMin)
-            i.GetLScore = (i.GetLScore - wCurrentScoreMin) / (wCurrentScoreMax - wCurrentScoreMin)
-
-    @staticmethod
-    def getSqrtSumQuaaters(self, x):
-        sum = 0
-        for i in x:
-            sum += x * x
-        return math.sqrt(sum)
+        difMinMax_For_Tryes = wCurrentTryesMax - wCurrentTryesMin
+        diffMinMax_For_Date = wCurrentDateMax - wCurrentDateMin
+        diffMinMax_For_Score = wCurrentScoreMax - wCurrentScoreMin
+        if (diffMinMax_For_Score!=0 and diffMinMax_For_Date!=0 and difMinMax_For_Tryes!=0):
+            for i in labs:
+                i.Tryes = (i.Tryes - wCurrentTryesMin) / difMinMax_For_Tryes
+                i.PassDate = (i.PassDate - wCurrentDateMin) / diffMinMax_For_Date
+                i.GetLScore = (i.GetLScore - wCurrentScoreMin) / diffMinMax_For_Score
+        elif (diffMinMax_For_Score!=0 and diffMinMax_For_Date!=0 and difMinMax_For_Tryes==0):
+            for i in labs:
+                i.Tryes = 1
+                i.PassDate = (i.PassDate - wCurrentDateMin) / diffMinMax_For_Date
+                i.GetLScore = (i.GetLScore - wCurrentScoreMin) / diffMinMax_For_Score
+        elif (diffMinMax_For_Score!=0 and diffMinMax_For_Date==0 and difMinMax_For_Tryes!=0):
+            for i in labs:
+                i.Tryes = (i.Tryes - wCurrentTryesMin) / difMinMax_For_Tryes
+                i.PassDate = 1
+                i.GetLScore = (i.GetLScore - wCurrentScoreMin) / diffMinMax_For_Score
+        elif (diffMinMax_For_Score==0 and diffMinMax_For_Date!=0 and difMinMax_For_Tryes!=0):
+            for i in labs:
+                i.Tryes = (i.Tryes - wCurrentTryesMin) / difMinMax_For_Tryes
+                i.PassDate = (i.PassDate - wCurrentDateMin) / diffMinMax_For_Date
+                i.GetLScore = 1
+        elif (diffMinMax_For_Score!=0 and diffMinMax_For_Date==0 and difMinMax_For_Tryes==0):
+            for i in labs:
+                i.Tryes = 1
+                i.PassDate = 1
+                i.GetLScore = (i.GetLScore - wCurrentScoreMin) / diffMinMax_For_Score
+        elif (diffMinMax_For_Score==0 and diffMinMax_For_Date!=0 and difMinMax_For_Tryes==0):
+            for i in labs:
+                i.Tryes = 1
+                i.PassDate = (i.PassDate - wCurrentDateMin) / diffMinMax_For_Date
+                i.GetLScore = 1
+        elif (diffMinMax_For_Score==0 and diffMinMax_For_Date==0 and difMinMax_For_Tryes!=0):
+            for i in labs:
+                i.Tryes = (i.Tryes - wCurrentTryesMin) / difMinMax_For_Tryes
+                i.PassDate = 1
+                i.GetLScore = 1
+        else :
+            for i in labs:
+                i.Tryes = 1
+                i.PassDate = 1
+                i.GetLScore = 1
 
     @staticmethod
     def cosMetric(complLabOne, complLabTwo):
@@ -104,23 +107,34 @@ class Filterisation:
         vectorMultTwo = complLabTwo.GetLScore * complLabTwo.PassDate * complLabTwo.Tryes
         return (vectorMultOne * vectorMultTwo) / (sqrtSumOne * sqrtSumTwo)
 
+    def getAllComplLabsForCurrentStud(self, sId):
+        labsList = []
+        for i in self.AllCompletedLabs:
+            if i.Stud_ID == sId and Labs.Lab.getLabById(i.Lab_ID).Subject_ID == self.subjectId:
+                labsList.append(i)
+        return labsList
+
     # лабы надо сортировать по lab_id в обоих списках сданных лаб
     # надо пересмортреть циклы, от чего отталкиваться
     # предполагается, что, если чел даж не сдал лабу, в сданных лабах инфа об этом всё равно будет (прост всё по-минимуму стоять будет)
     def getNeighbors(self):
-        self.normilizingCompletedLabsDataForCurrent()  # нормализуем факторные даннные в сданных лабах проверяемого студента
+        Filterisation.normilizingCompletedLabsData(self.AllCompletedLabs)
+        # self.normilizingCompletedLabsDataForCurrent()  # нормализуем факторные даннные в сданных лабах проверяемого студента
+        self.AllCompletedLabsCurrent = self.getAllComplLabsForCurrentStud(self.currentStudentId)
         dists = {}  # словарь расстояний меж студентами (id другого студента,dist)
         for i in self.AllStudentsWithoutCurrent:
-            notCurLabs = CompletedLab.getAllCompletedLabsByStudId(i.Student_Id)  # все сданные лабы другого студента
+            #notCurLabs = CompletedLab.getAllCompletedLabsByStudId(i.Student_Id)  # все сданные лабы другого студента
+            notCurLabs = self.getAllComplLabsForCurrentStud(i.Student_Id)
+            if (len(notCurLabs) == 0):
+                continue
             notCurLabsThatHaveCur = []  # все сданные лабы другого студента, которые есть у проверяемого
             for k in self.AllCompletedLabsCurrent:
                 for j in notCurLabs:
                     if k.Lab_ID == j.Lab_ID:
                         notCurLabsThatHaveCur.append(j)
                         break
-            # print(len(notCurLabsThatHaveCur))
-            Filterisation.normilizingCompletedLabsData(
-                notCurLabsThatHaveCur)  # нормализауем факторные данные в сданных лабах у другого студента
+            print(len(notCurLabsThatHaveCur))
+            # Filterisation.normilizingCompletedLabsData( notCurLabsThatHaveCur)  # нормализауем факторные данные в сданных лабах у другого студента
             dist = 0
             for k in range(len(notCurLabsThatHaveCur)):
                 dist += Filterisation.cosMetric(self.AllCompletedLabsCurrent[k], notCurLabsThatHaveCur[k])
@@ -152,6 +166,13 @@ class Filterisation:
         AllTasks = Tasks.Task.getAllTasksInTestByTaskId(listOfIds)
         return AllTasks
 
+    def GetListOfTasks(self, listOfTaskIds):
+        listOfTaskIds = listOfTaskIds
+        listOfTasks = []
+        for i in listOfTaskIds:
+            listOfTasks.append(Tasks.Task.getTasksById(i))
+        return listOfTasks
+
     # ------------------------------------------------
     # идеально было бы вывести коэфф для сортировки по нему
     # ------------------------------------------------
@@ -168,13 +189,13 @@ class Filterisation:
     # взять сумму полученных баллов для каждого задания (4)
     # взять сложности для каждого задания (5)
     # и потом сортировать по значению = ((3)*(4))/(5)
-    #------------------------------------------------
+    # ------------------------------------------------
     # возвращает список id заданий
     # ------------------------------------------------
     def GetRoad(self, listOfObjectsOfCompletedTasks, listOfObjectsOfTasks):
         Road = {}
         maxScoresOfTasks = []  # список макс баллов, которое можно получить за каждое задание
-        difficultiesOfTasks = [] # список сложностей каждого задания
+        difficultiesOfTasks = []  # список сложностей каждого задания
         for i in listOfObjectsOfTasks:
             maxScoresOfTasks.append(i.MaxTScore)
             difficultiesOfTasks.append(i.Difficulty)
@@ -193,15 +214,15 @@ class Filterisation:
         for i in range(len(meanScoresForEachTask)):
             meanScoresForEachTask[i] /= len(listOfObjectsOfCompletedTasks)
             koef.append(meanScoresForEachTask[i] / maxScoresOfTasks[i])
-            Road[listOfObjectsOfTasks[i].Task_Id] = (sumOfScoresForEachTask[i]*koef[i])/difficultiesOfTasks[i]
+            Road[listOfObjectsOfTasks[i].Task_Id] = (sumOfScoresForEachTask[i] * koef[i]) / difficultiesOfTasks[i]
         sorted_tuples = sorted(Road.items(), key=lambda item: item[1], reverse=True)
         sorted_road = {k: v for k, v in sorted_tuples}
         sorted_road_list_of_keys = list(sorted_road.keys())
-        return sorted_road_list_of_keys
+        sorted_road_list_of_keys_task_objects = self.GetListOfTasks(sorted_road_list_of_keys)
+        return sorted_road_list_of_keys_task_objects
 
     def main(self):
         neigh = self.getNeighbors()
-        tasks = []
         for i in neigh:
             i.Print()
         completedTasks = self.GetCompletedTasks(neigh)
@@ -212,5 +233,6 @@ class Filterisation:
         for i in tasks:
             i.Print()
         road = self.GetRoad(completedTasks, tasks)
-        print(road)
+        for i in road:
+            print(i.Task_Id)
         return road

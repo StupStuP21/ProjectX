@@ -35,6 +35,23 @@ class Ui_MainWindow(object):
         self.predict_button = QtWidgets.QPushButton(self.tab_predict)
         self.predict_button.setGeometry(QtCore.QRect(10, 60, 75, 23))
         self.predict_button.setObjectName("predict_button")
+
+        self.add_score_label = QtWidgets.QLabel(self.tab_predict)
+        self.add_score_label.setGeometry(QtCore.QRect(10, 90, 60, 13))
+        self.add_score_label.setObjectName("add_score_label")
+        self.lab_label = QtWidgets.QLabel(self.tab_predict)
+        self.lab_label.setGeometry(QtCore.QRect(140, 105, 60, 13))
+        self.lab_label.setObjectName("lab_label")
+        self.score_edit = QtWidgets.QLineEdit(self.tab_predict)
+        self.score_edit.setGeometry(QtCore.QRect(10, 120, 120, 20))
+        self.score_edit.setObjectName("score_edit")
+        self.add_button = QtWidgets.QPushButton(self.tab_predict)
+        self.add_button.setGeometry(QtCore.QRect(10, 150, 150, 23))
+        self.add_button.setObjectName("add_button")
+        self.comboBox_labs = QtWidgets.QComboBox(self.tab_predict)
+        self.comboBox_labs.setGeometry(QtCore.QRect(140, 120, 69, 21))
+        self.comboBox_labs.setObjectName("comboBox_subject")
+
         self.text_predict_edit = QtWidgets.QTextEdit(self.tab_predict)
         self.text_predict_edit.setGeometry(QtCore.QRect(220, 30, 541, 501))
         self.text_predict_edit.setReadOnly(True)
@@ -70,6 +87,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+
+        self.add_score_label.setText(_translate("MainWindow", "Результат"))
+        self.lab_label.setText(_translate("MainWindow", "Лаба"))
+        self.add_button.setText(_translate("MainWindow", "Добавить результат"))
+
         self.studid_label.setText(_translate("MainWindow", "StudId"))
         self.subject_label.setText(_translate("MainWindow", "Предмет"))
         self.predict_button.setText(_translate("MainWindow", "Стратегия"))

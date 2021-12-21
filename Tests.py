@@ -42,4 +42,5 @@ class Test(db.Base):
         return newTest
 
 
+
 db.Base.metadata.create_all(db.engine)

@@ -1,14 +1,14 @@
+import datetime
 import math
 
-import CompletedLabs
+#import CompletedLabs
 import Labs
 import Tasks
-from main import db
 from Labs import Lab
 from Students import Student
 from Tests import Test
-from CompletedLabs import CompletedLab
 from CompletedTasks import CompletedTask
+from CompletedLabs import CompletedLab
 
 
 nNearest = 1
@@ -24,7 +24,7 @@ class Filterisation:
         self.AllStudentsWithoutCurrent = Student.getStudentsWithoutById(self.currentStudentId)
         self.currentStudent = Student.getStudentById(self.currentStudentId)
         self.AllCompletedLabs = Lab.getAll_in_Subject(self.subjectId)
-        self.AllCompletedLabs = CompletedLabs.CompletedLab.getAllCompletedLabs()
+        self.AllCompletedLabs = CompletedLab.getAllCompletedLabs()
         self.Test_Id = testId
         self.Test = Test.getTestById(testId)
         self.AllTasks = ...
@@ -39,6 +39,7 @@ class Filterisation:
         wCurrentScoreMax = 0
         wCurrentScoreMin = 0
         for i in labs:
+            i.PassDate = datetime.date(wCurrentDateMax.year,i.PassDate.month,i.PassDate.day)
             if i.GetLScore > wCurrentScoreMax:
                 wCurrentScoreMax = i.GetLScore
             elif i.GetLScore < wCurrentScoreMin:
@@ -133,7 +134,6 @@ class Filterisation:
                     if k.Lab_ID == j.Lab_ID:
                         notCurLabsThatHaveCur.append(j)
                         break
-            print(len(notCurLabsThatHaveCur))
             # Filterisation.normilizingCompletedLabsData( notCurLabsThatHaveCur)  # нормализауем факторные данные в сданных лабах у другого студента
             dist = 0
             for k in range(len(notCurLabsThatHaveCur)):
@@ -223,16 +223,20 @@ class Filterisation:
 
     def main(self):
         neigh = self.getNeighbors()
+        print("Neighbors")
         for i in neigh:
             i.Print()
         completedTasks = self.GetCompletedTasks(neigh)
+        print("Complted Tasks:")
         for i in completedTasks:
             for j in i:
                 j.Print()
         tasks = self.GetTasks(completedTasks)
+        print("Tasks:")
         for i in tasks:
             i.Print()
         road = self.GetRoad(completedTasks, tasks)
+        print("Road:")
         for i in road:
             print(i.Task_Id)
         return road

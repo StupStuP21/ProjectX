@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, Column, SMALLINT, VARCHAR
 
-#from CompletedTasks import CompletedTask
+# from CompletedTests import CompletedTest
 from main import db
 
 
@@ -55,6 +55,18 @@ class Student(db.Base):
                 break
         return newStudent
 
+    # @staticmethod
+    # def getAllStudentsWithCompletedTest(testId):
+    #     students = db.getAllStudents()
+    #     Students = []
+    #     completedTests = CompletedTest.getAllByTestId(testId)
+    #     for i in students:
+    #         for x in completedTests:
+    #             if (i[0] == x.Stud_Id):
+    #                 newStudent = Student(i[0], i[1], i[2], i[3])
+    #                 Students.append(newStudent)
+    #                 break
+    #     return Students
     @staticmethod
     def getStudentsWithoutById(id):
         students = db.getAllStudents()

@@ -5,6 +5,7 @@ from Students import Student
 from Tests import Test
 from Tasks import Task
 
+
 class CompletedTask(db.Base):
     __tablename__ = 'TestTaskStud'
     __table_args__ = {'extend_existing': True}
@@ -24,7 +25,8 @@ class CompletedTask(db.Base):
     Tasks = relationship(Task)
 
     def Print(self):
-        print("Student_Id:",self.Stud_Id,";","Test_Id:",self.Test_Id,";","Task_Id",self.Task_Id,";","GetTScore:",self.GetTaskScore)
+        print("Student_Id:", self.Stud_Id, ";", "Test_Id:", self.Test_Id, ";", "Task_Id", self.Task_Id, ";",
+              "GetTScore:", self.GetTaskScore)
 
     @staticmethod
     def addNewInBase(CompletedTaskObject):
@@ -41,7 +43,7 @@ class CompletedTask(db.Base):
         return newCompletedTask
 
     @staticmethod
-    def getAllCompletedTasksInTest(StudentObject,testId):
+    def getAllCompletedTasksInTest(StudentObject, testId):
         completedTasksAll = db.getAllTestTaskStud()
         completedTasks = []
         for i in completedTasksAll:
@@ -50,5 +52,13 @@ class CompletedTask(db.Base):
                 completedTasks.append(newTask)
         return completedTasks
 
-db.Base.metadata.create_all(db.engine)
+    @staticmethod
+    def getCompletedTaskByIdInTest(StudentObject, TaskObject, testId):
+        completedTasksAll = db.getAllTestTaskStud()
+        for i in completedTasksAll:
+            if i[0] == StudentObject.Student_Id and i[2] == TaskObject.Task_Id and i[1] == testId:
+                newTask = CompletedTask(i[0], i[1], i[2], i[3])
+        return newTask
 
+
+db.Base.metadata.create_all(db.engine)

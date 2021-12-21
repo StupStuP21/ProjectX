@@ -37,6 +37,7 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = StartWindow()
     #Controller.test()
+    #Controller.forGraphic()
     window.show()
     setSubjects()
     app.exec()

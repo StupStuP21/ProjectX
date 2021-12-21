@@ -1,6 +1,6 @@
 # from Labs import Lab
 from Filtering import Filterisation
-
+from ForGraphics import ForGraphics
 
 # from CompletedLabs import CompletedLab
 # from CompletedTests import CompletedTest
@@ -12,5 +12,14 @@ from Filtering import Filterisation
 def test():
     newFilter = Filterisation(id=1, subjectId=1, testId=1)
     road = newFilter.main()
+
+def forGraphic():
+    newObject = ForGraphics(testId=1)
+    scores,koeffs = newObject.main()
+    print("Баллы:")
+    print(scores)
+    print("Коэффы:")
+    print(koeffs)
+
 
 

@@ -33,6 +33,36 @@ class CompletedTest(db.Base):
         session.commit()
         return newCompletedTest
 
+    @staticmethod
+    def getAllByTestId(testId):
+        allTests = db.getAllTestStud()
+        allTestsById = []
+        for i in allTests:
+            if (i[1]==testId):
+                newCompletedTest = CompletedTest(i[0],i[1],i[2])
+                allTestsById.append(newCompletedTest)
+        return allTestsById
+
+    @staticmethod
+    def getAllStudentsWithCompletedTest(testId):
+        students = db.getAllStudents()
+        sstudents = []
+        completedTests = CompletedTest.getAllByTestId(testId)
+        for i in students:
+            for x in completedTests:
+                if (i[0] == x.Stud_Id):
+                    newStudent = Student(i[0], i[1], i[2], i[3])
+                    sstudents.append(newStudent)
+                    break
+        return sstudents
+
+    @staticmethod
+    def getCompletedTestByStudIdAndTestId(studentObject,testObject):
+        tests = db.getAllTestStud()
+        for i in tests:
+            if (i[0] == studentObject.Student_Id and i[1]==testObject.Test_ID):
+                newCompletedTest = CompletedTest(i[0],i[1],i[2])
+        return newCompletedTest
 
 
 

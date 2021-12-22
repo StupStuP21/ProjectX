@@ -17,16 +17,13 @@ def test():
 
 def forGraphic():
     # для графика
+    """
     newObject = ForGraphics(testId=1)
     scores,koeffs = newObject.main()
-    print("Баллы:")
-    print(scores)
-    print("Коэффы:")
-    print(koeffs)
-    # получение очерёдности заданий
-    newNumbers = NumberInTest(testId=1)
-    numbers = newNumbers.setgetNumbersInTest()
-    print(numbers)
+    """
+    scores, koeffs = [1,2,3,4,5],[5,4,3,2,1]
+    return scores, koeffs
+
 
 
 

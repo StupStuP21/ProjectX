@@ -51,7 +51,7 @@ class DatabaseConnect:
     def getAllTestsBySubjectName(self, subject):
         subject = self.getSubjectByName(subject)
         session = self.Session()
-        q = session.query(self.tests_table).filter(self.tests_table.c.Subject_Id == 1)
+        q = session.query(self.tests_table).filter(self.tests_table.c.Subject_Id == subject.id)
         #q = session.query(self.tests_table)
         a = []
         for c in q:
@@ -60,16 +60,15 @@ class DatabaseConnect:
 
     def getSubjectByName(self, name):
         session = self.Session()
-        q = session.query(self.subjects_table).filter(self.subjects_table.name == name)
-        subject = null
-        for c in q:
-            subject = subjectModel(c)
-        return subject
+        return subjectModel(session.query(self.subjects_table).filter(self.subjects_table.c.Name == name).first())
+        #filter(self.subjects_table.name == name).first()
+
 
 
     def __init__(self):
         self.engine = create_engine(
-            'mssql://LAPTOP-98I2O88V/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
+            #'mssql://LAPTOP-98I2O88V/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
+            'mssql://ПК\\SQLEXPRESS/ProjectXX?trusted_connection=yes&driver=ODBC Driver 17 for SQL Server')
         self.engine.connect()
         self.Base = declarative_base()
         self.Session = sessionmaker(bind=self.engine)

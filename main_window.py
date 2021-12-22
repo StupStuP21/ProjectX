@@ -65,13 +65,18 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_predict, "")
         self.tab_stat = QtWidgets.QWidget()
         self.tab_stat.setObjectName("tab_stat")
+        """
         self.graphicsViewForGraf = QtWidgets.QGraphicsView(self.tab_stat)
         self.graphicsViewForGraf.setGeometry(QtCore.QRect(260, 30, 511, 511))
         self.graphicsViewForGraf.setObjectName("graphicsViewForGraf")
+
         self.graf_label = QtWidgets.QLabel(self.tab_stat)
         self.graf_label.setGeometry(QtCore.QRect(260, 10, 121, 16))
+
         self.graf_label.setObjectName("graf_label")
+                """
         self.tabWidget.addTab(self.tab_stat, "")
+
         self.tab_something_else = QtWidgets.QWidget()
         self.tab_something_else.setObjectName("tab_something_else")
         self.tabWidget.addTab(self.tab_something_else, "")
@@ -97,6 +102,6 @@ class Ui_MainWindow(object):
         self.predict_button.setText(_translate("MainWindow", "Стратегия"))
         self.test_label.setText(_translate("MainWindow", "Контрольная"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_predict), _translate("MainWindow", "Советы по решению контрольных"))
-        self.graf_label.setText(_translate("MainWindow", "График чего-нибудь"))
+        #self.graf_label.setText(_translate("MainWindow", "График чего-нибудь"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_stat), _translate("MainWindow", "Статистика"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_something_else), _translate("MainWindow", "Хз"))

@@ -1,7 +1,10 @@
 from sqlalchemy import Integer, Column, ForeignKey
 from sqlalchemy.orm import relationship
+
+import Students
 from main import db
 from Subject import Subject
+from Tasks import Task
 
 
 class Test(db.Base):
@@ -41,6 +44,18 @@ class Test(db.Base):
                 break
         return newTest
 
-
+    @staticmethod
+    def getListOfAllTasksInTestIds(testId):
+        complTasks = db.getAllTestTaskStud()
+        currentTasks = []
+        for i in complTasks:
+            if i.Test_Id == testId:
+                currentStudentId = i.Stud_Id
+                break
+        listOfTasks = []
+        for i in complTasks:
+            if i.Test_Id==testId and i.Stud_Id==currentStudentId:
+                listOfTasks.append(i.Task_Id)
+        return listOfTasks
 
 db.Base.metadata.create_all(db.engine)

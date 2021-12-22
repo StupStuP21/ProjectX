@@ -10,6 +10,7 @@ from NumberOfTaskInTest import NumberInTest
 #     Lab.addNewLabInBase(newLab)
 
 def test():
+    #zadaniya
     newFilter = Filterisation(id=1, subjectId=1, testId=1)
     road = newFilter.main()
     #print(numbers)

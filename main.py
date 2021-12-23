@@ -24,8 +24,8 @@ class StartWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         scores, koeffs = Controller.forGraphic()
-        self.m = PlotCanvas(parent=self.tab_stat, width=5, height=4, scores=scores, koeffs=koeffs)
-        self.m.move(140, 30)
+        self.m = PlotCanvas(parent=self.tab_stat, width=12, height=5, scores=scores, koeffs=koeffs)
+        self.m.move(0, 30)
 class sub:
     def __init__(self, tup):
         self.id = tup[0]
@@ -57,19 +57,17 @@ def test_predict(road,queueOfNumbers):
     return Controller.forTest(road, queueOfNumbers)
 
 def predictButtonListener():
-
-    #studId,subId,testId
     subjectName = window.comboBox_subject.currentText()
     studId = int(window.lineEdit.text())
     testName = window.comboBox_text.currentText()
     testObject = db.getTestByName(testName)
     print(testObject.id)
     subjectObject = db.getSubjectByName(subjectName)
-    road = Filtering.Filterisation(studId,subjectObject.id,2).main() #<-------------место 2 подставить тестid
-    tasksWsDtoList = Controller.forTest(road,2) #<-------------место 2 подставить тестid
-    window.text_predict_edit.setText("\tНомер\tНомер в контрольной\tТема\n")
+    road = Filtering.Filterisation(studId,subjectObject.id,testObject.id).main()
+    tasksWsDtoList = Controller.forTest(road,testObject.id)
+    window.text_predict_edit.setText("Номер\tНомер в контрольной\tТема\n")
     for task in tasksWsDtoList:
-        line = "\t" + str(task.TaskQueueInOutput) + "\t"*2 + str(task.TaskQueue) + "\t" + task.Theme+"\n"
+        line =  str(task.TaskQueueInOutput) + "\t"*2 + str(task.TaskQueue) + "\t" + task.Theme+"\n"
         window.text_predict_edit.setText(window.text_predict_edit.toPlainText() + line)
 
 def subjectComboboxChanged():

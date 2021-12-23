@@ -23,9 +23,9 @@ class StartWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        # scores, koeffs = Controller.forGraphic()
-        # self.m = PlotCanvas(parent=self.tab_stat, width=5, height=4, scores=scores, koeffs=koeffs)
-        # self.m.move(140, 30)
+        scores, koeffs = Controller.forGraphic()
+        self.m = PlotCanvas(parent=self.tab_stat, width=5, height=4, scores=scores, koeffs=koeffs)
+        self.m.move(140, 30)
 class sub:
     def __init__(self, tup):
         self.id = tup[0]

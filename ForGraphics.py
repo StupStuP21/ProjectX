@@ -40,7 +40,7 @@ class ForGraphics:
         for i in self.AllStudents:
             # percentsOfCompleting = []
             koeffsForCurrent = []
-            endingKoefForCurrent = 1
+            endingKoefForCurrent = 0
             taskCounter = 0
             for j in self.roads_for_all[studCounter]:
                 complTask = CompletedTask.getCompletedTaskByIdInTest(i, j, self.TestId)
@@ -53,7 +53,7 @@ class ForGraphics:
 
             for x in koeffsForCurrent:
                 endingKoefForCurrent += x
-            endingKoefForCurrent /= len(self.roads_for_all[0])
+            endingKoefForCurrent /= len(koeffsForCurrent)
 
             self.koefs_for_all.append(endingKoefForCurrent)
             studCounter += 1

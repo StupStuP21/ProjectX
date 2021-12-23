@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, ForeignKey,Date
+from sqlalchemy import Integer, Column, ForeignKey,Date,REAL
 from sqlalchemy.orm import relationship
 from main import db
 from Students import Student
@@ -19,7 +19,7 @@ class CompletedLab(db.Base):
     Lab_ID = Column(Integer,ForeignKey('Labs.Lab_Id'), primary_key=True,unique=True)
     Tryes = Column(Integer, nullable=False)
     PassDate=Column(Date,nullable=True)
-    GetLScore=Column(Integer,nullable=False)
+    GetLScore=Column(REAL,nullable=False)
     Students = relationship(Student)
     Labs = relationship(Lab)
 

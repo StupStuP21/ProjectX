@@ -1,6 +1,6 @@
 import sqlalchemy
 import Subject as sub
-from sqlalchemy import Integer,  Column, VARCHAR, DATETIME, ForeignKey
+from sqlalchemy import Integer,  Column, VARCHAR, DATETIME, ForeignKey,REAL
 from sqlalchemy.orm import relationship
 from main import db
 Subject = sub.Subject
@@ -21,7 +21,7 @@ class Lab(db.Base):
     Lab_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
     Theme = Column(VARCHAR(255), nullable=False)
     DeadlineDate = Column(DATETIME, nullable=False)
-    MaxLScore = Column(Integer, nullable=False)
+    MaxLScore = Column(REAL, nullable=False)
     Subject_ID = Column(Integer, ForeignKey('Subjects.Subject_ID'))
     Subject = relationship(Subject)
 

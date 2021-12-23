@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, ForeignKey
+from sqlalchemy import Integer, Column, ForeignKey,REAL
 from sqlalchemy.orm import relationship
 
 import Students
@@ -17,7 +17,7 @@ class Test(db.Base):
         self.MaxTScore = MaxTScore
 
     Test_ID = Column(Integer, nullable=False, primary_key=True, unique=True)
-    MaxTScore = Column(Integer, nullable=False)
+    MaxTScore = Column(REAL, nullable=False)
     Subject_ID = Column(Integer, ForeignKey('Subjects.Subject_ID'))
     Subject = relationship(Subject)
 

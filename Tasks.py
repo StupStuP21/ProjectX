@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, VARCHAR
+from sqlalchemy import Integer, Column, VARCHAR,REAL
 from main import db
 
 
@@ -15,7 +15,7 @@ class Task(db.Base):
     Task_Id = Column(Integer, nullable=False, primary_key=True, unique=True)
     Theme = Column(VARCHAR(255), nullable=False)
     Difficulty = Column(Integer, nullable=False)
-    MaxTScore = Column(Integer, nullable=True)
+    MaxTScore = Column(REAL, nullable=True)
 
     def Print(self):
         print("Task_Id:", self.Task_Id, ";", "Theme:", self.Theme, ";", "Difficulty:", self.Difficulty,";","MaxTScore:",self.MaxTScore)

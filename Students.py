@@ -50,7 +50,6 @@ class Student(db.Base):
         students = db.getAllStudents()
         for i in students:
             if i[0] == id:
-                student = i
                 newStudent = Student(i[0], i[1], i[2], i[3])
                 break
         return newStudent

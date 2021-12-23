@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, ForeignKey
+from sqlalchemy import Integer, Column, ForeignKey,REAL
 from sqlalchemy.orm import relationship
 from main import db
 from Students import Student
@@ -19,7 +19,7 @@ class CompletedTask(db.Base):
     Stud_Id = Column(Integer, ForeignKey('Students.Student_Id'), primary_key=True, unique=True)
     Test_Id = Column(Integer, ForeignKey('Tests.Test_ID'), primary_key=True, unique=True)
     Task_Id = Column(Integer, ForeignKey('Tasks.Task_Id'), primary_key=True, unique=True)
-    GetTaskScore = Column(Integer, nullable=True)
+    GetTaskScore = Column(REAL, nullable=True)
     Students = relationship(Student)
     Tests = relationship(Test)
     Tasks = relationship(Task)

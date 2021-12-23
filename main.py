@@ -8,9 +8,11 @@ import Controller
 from PyQt6 import QtWidgets
 
 #from ForGraphics import ForGraphics1
+import Filtering
 from Graphic1 import PlotCanvas
 from main_window import Ui_MainWindow
 from DatabaseConnect import DatabaseConnect
+#from NumberOfTaskInTest import NumberInTest
 
 
 db = DatabaseConnect()
@@ -21,9 +23,9 @@ class StartWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        scores, koeffs = Controller.forGraphic()
-        self.m = PlotCanvas(parent=self.tab_stat, width=5, height=4, scores=scores, koeffs=koeffs)
-        self.m.move(140, 30)
+        # scores, koeffs = Controller.forGraphic()
+        # self.m = PlotCanvas(parent=self.tab_stat, width=5, height=4, scores=scores, koeffs=koeffs)
+        # self.m.move(140, 30)
 class sub:
     def __init__(self, tup):
         self.id = tup[0]
@@ -35,7 +37,7 @@ class sub:
 class test:
     def __init__(self,tup):
         self.id = tup[0]
-        self.theme = str(tup[1])
+        self.theme = str(tup[3])
 
     def __str__(self):
         return self.theme
@@ -50,15 +52,21 @@ def setSubjects():
 def get_Predict():
     pass
 
-def test_predict():
-    return getTaskWsDtoListMock(1,1,1)
+def test_predict(road,queueOfNumbers):
+
+    return Controller.forTest(road, queueOfNumbers)
 
 def predictButtonListener():
-    tasksWsDtoList = test_predict()
+
     #studId,subId,testId
     subjectName = window.comboBox_subject.currentText()
-    studId = window.lineEdit.text()
-    testId = window.comboBox_text.currentText()
+    studId = int(window.lineEdit.text())
+    testName = window.comboBox_text.currentText()
+    testObject = db.getTestByName(testName)
+    print(testObject.id)
+    subjectObject = db.getSubjectByName(subjectName)
+    road = Filtering.Filterisation(studId,subjectObject.id,2).main() #<-------------место 2 подставить тестid
+    tasksWsDtoList = Controller.forTest(road,2) #<-------------место 2 подставить тестid
     window.text_predict_edit.setText("\tНомер\tНомер в контрольной\tТема\n")
     for task in tasksWsDtoList:
         line = "\t" + str(task.TaskQueueInOutput) + "\t"*2 + str(task.TaskQueue) + "\t" + task.Theme+"\n"

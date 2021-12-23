@@ -25,6 +25,7 @@ class PlotCanvas(FigureCanvas):
         newObject = ForGraphics(testId=1)
         """
         ax = self.figure.add_subplot(111)
-        ax.plot(koeffs,scores)
+        ax.scatter(koeffs,scores)
+        #ax.plot(koeffs,scores)
         ax.set_title('График зависимости успешности выполнения контрольных работ от предполагаемой нами успешной стратегии')
         self.draw()

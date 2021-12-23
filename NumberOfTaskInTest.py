@@ -1,5 +1,4 @@
 from Tests import Test
-from Tasks import Task
 
 class NumberInTest:
 

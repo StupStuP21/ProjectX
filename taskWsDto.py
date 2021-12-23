@@ -3,11 +3,14 @@ from Filtering import Filterisation
 from NumberOfTaskInTest import NumberInTest
 """
 
+
 class TaskWsDTO:
     def __init__(self, taskQueueInOutput, Theme, taskQueue):
         self.TaskQueueInOutput = taskQueueInOutput
         self.Theme = Theme
         self.TaskQueue = taskQueue
+
+
 """
 def getTasksWsDTOList(studId, subId, testId):
     newFilter = Filterisation(id=studId, subjectId=subId, testId=testId)
@@ -22,9 +25,21 @@ def getTasksWsDTOList(studId, subId, testId):
         i+=1
     return tasksWsDtoList
 """
-def getTaskWsDtoListMock(studId,subId,testId):
+
+
+def getTaskWsDtoListMock2(road, queueOfNumbers):
+    tasksWsDtoList = []
+    count = 1
+    for i in road:
+        newTaskWsDto = TaskWsDTO(count, i.Theme, queueOfNumbers[i.Task_Id])
+        tasksWsDtoList.append(newTaskWsDto)
+        count += 1
+    return tasksWsDtoList
+
+
+def getTaskWsDtoListMock(studId, subId, testId):
     tasksWsDtoList = []
     for i in range(10):
-        newTaskWsDto = TaskWsDTO(i,"testTheme", i-1)
+        newTaskWsDto = TaskWsDTO(i, "testTheme", i - 1)
         tasksWsDtoList.append(newTaskWsDto)
     return tasksWsDtoList

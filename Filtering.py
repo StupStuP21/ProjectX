@@ -11,7 +11,7 @@ from CompletedTasks import CompletedTask
 from CompletedLabs import CompletedLab
 
 
-nNearest = 1
+nNearest = 3
 
 
 class Filterisation:
@@ -223,6 +223,8 @@ class Filterisation:
 
     def main(self):
         neigh = self.getNeighbors()
+        print("Student")
+        self.currentStudent.Print()
         print("Neighbors")
         for i in neigh:
             i.Print()
